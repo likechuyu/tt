@@ -25,13 +25,14 @@
   </div>
 </template>
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     const mobileIs = (rule, value, callback) => {
       if (/^1(3|4|5|7|8)\d{9}$/.test(value)) { callback() } else { callback(new Error('手机号格式不正确')) }
     }
     return {
-      loginForm: { mobile: '', code: '' },
+      loginForm: { mobile: '13333333333', code: '246810' },
       formis: {
         mobile: [{ required: true, message: '请输入手机号', trigger: 'blur' }, { validator: mobileIs, trigger: 'blur' }],
         code: [
@@ -47,6 +48,8 @@ export default {
       this.$refs[loginForm].validate((valid) => {
         if (valid) {
           this.$http.post('authorizations', this.loginForm).then(res => {
+            // 登陆成功
+            local.setUser(res.data.data)
             this.$router.push('/')
           }).catch(() => {
             this.$message.error('手机号或验证码错误')

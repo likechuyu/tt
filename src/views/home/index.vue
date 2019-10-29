@@ -80,6 +80,11 @@ export default {
     isTrigger () {
       this.isOpen = !this.isOpen
     }
+  },
+  created () {
+    this.$http.get('articles').then(res => {
+      console.log(res)
+    })
   }
 }
 </script>
