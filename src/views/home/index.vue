@@ -6,7 +6,7 @@
       <!-- logo end -->
       <!-- 侧边导航 -->
       <el-menu
-        default-active="1"
+        :default-active="$route.path"
         background-color="#002033"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -50,15 +50,15 @@
       <el-header>
         <span @click="isTrigger" class="el-icon-s-unfold icon"></span>
         <span class="text">xxx公司xxx头条</span>
-        <el-dropdown>
+        <el-dropdown @command="handleClick">
           <span class="el-dropdown-link">
-            <img class="userNameImg" src="../../assets/avatar.jpg" alt />
-            <span class="userName">张大炮</span>
+            <img class="userNameImg" :src="imgUrl" alt />
+            <span class="userName" v-text="userName"></span>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人设置</el-dropdown-item>
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item command="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout">退出</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -68,23 +68,40 @@
     </el-container>
   </el-container>
 </template>
-
 <script>
+import local from '@/utils/local'
 export default {
   data () {
     return {
-      isOpen: false
+      isOpen: false,
+      userName: '',
+      imgUrl: ''
     }
   },
   methods: {
     isTrigger () {
       this.isOpen = !this.isOpen
+    },
+    handleClick (command) {
+      // if (command === 'logout') {
+      //   this.logout()
+      // } else {
+      //   this.setting()
+      // }
+      this[command]()
+    },
+    setting () {
+      this.$router.push('setting')
+    },
+    logout () {
+      local.delUser()
+      this.$router.push('/login')
     }
   },
   created () {
-    this.$http.get('articles').then(res => {
-      console.log(res)
-    })
+    let { name, photo } = local.getUser()
+    this.userName = name
+    this.imgUrl = photo
   }
 }
 </script>

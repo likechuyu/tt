@@ -45,15 +45,16 @@ export default {
   },
   methods: {
     logIn (loginForm) {
-      this.$refs[loginForm].validate((valid) => {
+      this.$refs[loginForm].validate(async (valid) => {
         if (valid) {
-          this.$http.post('authorizations', this.loginForm).then(res => {
-            // 登陆成功
-            local.setUser(res.data.data)
+          try {
+            const { data: { data } } = await this.$http.post('authorizations', this.loginForm)
+            // 获取数据了
+            local.setUser(data)
             this.$router.push('/')
-          }).catch(() => {
+          } catch (err) {
             this.$message.error('手机号或验证码错误')
-          })
+          }
         }
       })
     }
