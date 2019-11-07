@@ -32,7 +32,7 @@ export default {
       if (/^1(3|4|5|7|8)\d{9}$/.test(value)) { callback() } else { callback(new Error('手机号格式不正确')) }
     }
     return {
-      loginForm: { mobile: '13333333333', code: '246810' },
+      loginForm: { mobile: '13911111111', code: '246810' },
       formis: {
         mobile: [{ required: true, message: '请输入手机号', trigger: 'blur' }, { validator: mobileIs, trigger: 'blur' }],
         code: [

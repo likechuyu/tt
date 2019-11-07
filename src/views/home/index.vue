@@ -70,15 +70,20 @@
 </template>
 <script>
 import local from '@/utils/local'
+import eventBus from '@/utils/eventBus'
+
 export default {
+
   data () {
     return {
       isOpen: false,
       userName: '',
       imgUrl: ''
+
     }
   },
   methods: {
+
     isTrigger () {
       this.isOpen = !this.isOpen
     },
@@ -102,7 +107,14 @@ export default {
     let { name, photo } = local.getUser()
     this.userName = name
     this.imgUrl = photo
+    eventBus.$on('updateName', (userName) => {
+      this.userName = userName
+    })
+    eventBus.$on('updatePhoto', (photo) => {
+      this.imgUrl = photo
+    })
   }
+
 }
 </script>
 
